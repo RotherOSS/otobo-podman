@@ -1,0 +1,60 @@
+# --
+# OTOBO is a web-based ticketing system for service organisations.
+# --
+# Copyright (C) 2019-2026 Rother OSS GmbH, https://otobo.io/
+# --
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# --
+
+# OTOBO web application server (port 5000), derived from the service 'web'
+# in otobo-base.yml. With the service nginx the port is not published, nginx is
+# the only entry point. Without nginx the port is published via HTTP.
+# This is a template, see otobo-db.container.
+
+[Unit]
+Description=OTOBO web server
+PartOf=otobo.target
+# Dependencies on the network and volume units are added by Quadlet automatically.
+# The services below use Notify=healthy, so web starts after they are healthy.
+After=otobo-db.service otobo-elastic.service ${OTOBO_WEB_REDIS_DEPENDENCY}
+Requires=otobo-db.service otobo-elastic.service ${OTOBO_WEB_REDIS_DEPENDENCY}
+
+[Container]
+Image=${OTOBO_IMAGE_OTOBO}
+ContainerName=otobo-web
+Network=otobo.network
+NetworkAlias=web
+Volume=otobo-opt-otobo.volume:/opt/otobo
+Volume=otobo-opt-otobo-update.volume:/opt/otobo_update
+
+DropCapability=ALL
+
+# Only set without nginx: PublishPort=<ip>:<port>:5000
+${OTOBO_WEB_PUBLISHPORT}
+
+# OTOBO_PROXY_SECRET, generated from .env
+EnvironmentFile=${OTOBO_ENV_DIR}/web.env
+
+# Entry point arguments, same as 'command: web ${OTOBO_WEB_OPTION}' in the compose file.
+Exec=web ${OTOBO_WEB_OPTION}
+
+HealthCmd=curl -s -f http://localhost:5000/health | grep ✅ || exit 1
+HealthInterval=30s
+HealthStartPeriod=120s
+Notify=healthy
+
+LogDriver=journald
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=otobo.target

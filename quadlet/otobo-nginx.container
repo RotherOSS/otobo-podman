@@ -1,0 +1,60 @@
+# --
+# OTOBO is a web-based ticketing system for service organisations.
+# --
+# Copyright (C) 2019-2026 Rother OSS GmbH, https://otobo.io/
+# --
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# --
+
+# nginx reverse proxy providing HTTPS for OTOBO, derived from the service
+# 'nginx' in otobo-override-https.yml.
+# This is a template, see otobo-db.container.
+
+[Unit]
+Description=OTOBO reverse proxy (nginx, HTTPS)
+PartOf=otobo.target
+# Dependencies on the network and volume units are added by Quadlet automatically.
+After=otobo-web.service
+Requires=otobo-web.service
+
+[Container]
+Image=${OTOBO_IMAGE_OTOBO_NGINX}
+ContainerName=otobo-nginx
+Network=otobo.network
+NetworkAlias=nginx
+Volume=otobo-nginx-ssl.volume:/etc/nginx/ssl
+
+# Capabilities nginx needs to drop privileges after binding its ports.
+DropCapability=ALL
+AddCapability=CAP_SYS_CHROOT
+AddCapability=CAP_CHOWN
+AddCapability=CAP_DAC_OVERRIDE
+AddCapability=CAP_SETGID
+AddCapability=CAP_SETUID
+
+# The HTTP port only redirects to HTTPS.
+PublishPort=${OTOBO_WEB_HTTPS_IPADDR}:${OTOBO_WEB_HTTPS_PORT}:8443
+PublishPort=${OTOBO_WEB_HTTP_IPADDR}:${OTOBO_WEB_HTTP_PORT}:8080
+
+# OTOBO_NGINX_* settings, certificate paths and the proxy secret, generated from .env
+EnvironmentFile=${OTOBO_ENV_DIR}/nginx.env
+
+HealthCmd=service nginx status || exit 1
+HealthInterval=30s
+Notify=healthy
+
+LogDriver=journald
+
+[Service]
+Restart=always
+TimeoutStartSec=120
+
+[Install]
+WantedBy=otobo.target

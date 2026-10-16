@@ -1,0 +1,62 @@
+# --
+# OTOBO is a web-based ticketing system for service organisations.
+# --
+# Copyright (C) 2019-2026 Rother OSS GmbH, https://otobo.io/
+# --
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# --
+
+# MariaDB server for OTOBO, derived from the service 'db' in otobo-base.yml.
+# This is a template: scripts/install.sh replaces the placeholders
+# with the values from .env and installs the result.
+
+[Unit]
+Description=OTOBO database (MariaDB)
+PartOf=otobo.target
+# Dependencies on the network and volume units are added by Quadlet automatically.
+
+[Container]
+Image=${OTOBO_IMAGE_DB}
+ContainerName=otobo-db
+Network=otobo.network
+# Other containers reach the database under the host name 'db'.
+NetworkAlias=db
+Volume=otobo-mariadb-data.volume:/var/lib/mysql
+
+# Run as the unprivileged user of the image (same as 'user: mysql:mysql').
+User=mysql
+Group=mysql
+DropCapability=ALL
+AddCapability=CAP_SYS_CHROOT
+
+# MYSQL_ROOT_PASSWORD and MARIADB_AUTO_UPGRADE, generated from .env
+EnvironmentFile=${OTOBO_ENV_DIR}/db.env
+
+# The server executable is provided by the entrypoint of the image.
+# Only the server options are passed here, exactly as in the compose file.
+Exec=--max-allowed-packet=136314880 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-log-file-size=268435456 --query-cache-size=${OTOBO_DB_QUERY_CACHE_SIZE}
+
+# See https://mariadb.org/mariadb-server-docker-official-images-healthcheck-without-mysqladmin/
+HealthCmd=healthcheck.sh --connect --innodb_initialized
+HealthInterval=30s
+HealthStartPeriod=60s
+# Report 'ready' to systemd only when the health check passes. Units that depend
+# on this service start after the database is really usable. This replaces
+# 'depends_on' with 'condition: service_healthy'.
+Notify=healthy
+
+LogDriver=journald
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=otobo.target

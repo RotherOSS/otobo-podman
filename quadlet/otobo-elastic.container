@@ -1,0 +1,52 @@
+# --
+# OTOBO is a web-based ticketing system for service organisations.
+# --
+# Copyright (C) 2019-2026 Rother OSS GmbH, https://otobo.io/
+# --
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# --
+
+# Elasticsearch for OTOBO, derived from the service 'elastic' in otobo-base.yml.
+# Requires vm.max_map_count=262144 on the host, see sysctl/90-otobo.conf.
+# This is a template, see otobo-db.container.
+
+[Unit]
+Description=OTOBO search engine (Elasticsearch)
+PartOf=otobo.target
+# Dependencies on the network and volume units are added by Quadlet automatically.
+
+[Container]
+Image=${OTOBO_IMAGE_OTOBO_ELASTICSEARCH}
+ContainerName=otobo-elastic
+Network=otobo.network
+NetworkAlias=elastic
+Volume=otobo-elasticsearch-data.volume:/usr/share/elasticsearch/data
+
+DropCapability=ALL
+AddCapability=CAP_SYS_CHROOT
+AddCapability=CAP_SETUID
+AddCapability=CAP_SETGID
+
+# discovery.type, xpack.security.enabled and ES_JAVA_OPTS, generated from .env
+EnvironmentFile=${OTOBO_ENV_DIR}/elastic.env
+
+HealthCmd=curl --silent --fail 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' || exit 1
+HealthInterval=30s
+HealthStartPeriod=120s
+Notify=healthy
+
+LogDriver=journald
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=otobo.target
