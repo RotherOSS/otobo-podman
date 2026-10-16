@@ -75,7 +75,7 @@ Differences to the Docker Compose setup
 Requirements
 ------------
 
-* RHEL 9 or 10 with ``podman`` installed (``dnf install podman``).
+* RHEL 9 or 10 with ``podman`` installed (``dnf install podman systemd-container``).
 * SELinux may stay in enforcing mode. Named volumes are used throughout, so
   no relabeling is required.
 * Memory: at least 4 GB; Elasticsearch takes 512 MB heap per default.
