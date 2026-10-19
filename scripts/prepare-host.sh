@@ -75,8 +75,11 @@ cat <<MSG
 
 Host preparation finished.
 
+For the next steps switch to the service user $SERVICE_USER.
+
+    machinectl shell $SERVICE_USER@
+
 Next steps, as user '$SERVICE_USER':
-    sudo machinectl shell $SERVICE_USER@
     cd ~/otobo-podman
     cp .podman_env_https .env      # or .podman_env_http
     vi .env                        # at least OTOBO_DB_ROOT_PASSWORD, certificate names, OTOBO_PROXY_SECRET
