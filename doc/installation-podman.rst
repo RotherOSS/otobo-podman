@@ -18,18 +18,19 @@ Installing on RHEL with Podman (Quadlet)
 
 .. note::
 
-   Proof of concept. This setup mirrors ``docker-compose/otobo-base.yml``
-   together with the HTTP, HTTPS and Redis extensions of ``otobo-docker``.
-   It uses only components shipped with Red Hat Enterprise Linux 9 and 10:
+   Proof of concept. This setup mirrors ``docker-compose/otobo-base.yml`` from
+   the repository `https://github.com/RotherOSS/otobo-docker``.
+   It supports the HTTP, HTTPS and Redis extensions of ``otobo-docker``.
+   It uses only components that are shipped with Red Hat Enterprise Linux 9 and 10:
    Podman, Quadlet and systemd. No Docker, no Compose tool and no
    third-party repository is required.
 
 Overview
 --------
 
-The configuration lives in one file ``.env``, exactly as in ``otobo-docker``
-and with the same variable names. ``scripts/install.sh`` reads it and
-generates one *Quadlet unit* per service. A Quadlet unit is a small systemd
+The configuration lives in the single file ``.env``. This is the same as in ``otobo-docker``.
+Almost all variable names are the same. The script ``scripts/install.sh`` reads the configuration
+and generates one *Quadlet unit* per service. A Quadlet unit is a small systemd
 unit file that Podman turns into a regular service on ``daemon-reload``:
 
 ================  =============================  ==============================
@@ -45,10 +46,10 @@ nginx             ``otobo-nginx.container``      ``otobo-nginx.service``
 volumes           ``otobo-*.volume``             ``otobo-*-volume.service``
 ================  =============================  ==============================
 
-All services are grouped by ``otobo.target``. The containers run *rootless*
+All services are grouped by the SystemD target ``otobo.target``. The containers run *rootless*
 under a dedicated, unprivileged service user. They talk to each other over
 the internal network ``otobo``, where Podman's DNS resolves the same host
-names as in the Compose setup (``db``, ``elastic``, ``redis``, ``web``).
+names as in the Compose setup (``db``, ``daemon``, ``elastic``, ``redis``, ``web``).
 Only the nginx ports (or, without nginx, the web server port) are published
 on the host.
 
@@ -84,8 +85,8 @@ Requirements
 Where the images come from
 --------------------------
 
-The image names are set in ``.env`` (``OTOBO_IMAGE_OTOBO``,
-``OTOBO_IMAGE_DB`` and so on). ``install.sh`` pulls them before installing
+The default image names and tags are set in ``scripts/install.sh``. They may be overridden in
+``.env`` (``OTOBO_IMAGE_OTOBO``, ``OTOBO_IMAGE_DB`` and so on). ``install.sh`` pulls them before installing
 the units.
 
 1. **Docker Hub (default).** Nothing to configure. The host needs internet
@@ -158,7 +159,7 @@ Ports 80 and 443
 ----------------
 
 Rootless Podman can not bind ports below 1024 per default, therefore the
-sample ``.env`` files use 8080 and 8443. Two options:
+sample ``.env`` files use 8080 and 8443. There are two options:
 
 * Keep the high ports and put a reverse proxy of your organisation in front.
 * Allow the service user to bind low ports: uncomment
