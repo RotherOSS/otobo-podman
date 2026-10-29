@@ -77,7 +77,7 @@ Host preparation finished.
 
 For the next steps switch to the service user $SERVICE_USER.
 
-    machinectl shell $SERVICE_USER@
+    sudo machinectl shell $SERVICE_USER@
 
 Next steps, as user '$SERVICE_USER':
     cd ~/otobo-podman
