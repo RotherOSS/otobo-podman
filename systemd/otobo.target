@@ -22,8 +22,8 @@
 
 [Unit]
 Description=OTOBO ticket system (all containers)
-Wants=otobo-db.service otobo-elastic.service otobo-redis.service
-Wants=otobo-web.service otobo-daemon.service otobo-nginx.service
+Wants=otobo-db.service otobo-elastic.service
+Wants=otobo-web.service otobo-daemon.service
 
 [Install]
 WantedBy=default.target
