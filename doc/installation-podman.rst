@@ -108,8 +108,8 @@ the units.
 Installation
 ------------
 
-1. Prepare the host as root. This creates the user ``otobo``, enables
-   lingering, installs the sysctl settings and copies the package to
+1. Prepare the host as root. This creates the system user ``otobo`` with the home directory ``/home/otobo`` ,
+   enables lingering, installs the sysctl settings and copies the package to
    ``/home/otobo/otobo-podman``::
 
        sudo scripts/prepare-host.sh
