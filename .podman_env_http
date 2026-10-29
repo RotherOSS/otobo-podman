@@ -60,7 +60,7 @@ OTOBO_ELASTICSEARCH_ES_JAVA_OPTS=-Xms512m -Xmx512m
 # Podman requires fully qualified image names, including the registry.
 # This is also the place where a local registry is configured: simply
 # replace 'docker.io' with the address of your registry, e.g.
-#   OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_0-beta3
+#   OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_1
 # A registry with a self-signed certificate must be declared in
 # /etc/containers/registries.conf (insecure = true), see
 # 'man containers-registries.conf'.
@@ -75,21 +75,21 @@ OTOBO_ELASTICSEARCH_ES_JAVA_OPTS=-Xms512m -Xmx512m
 ################################################################################
 # The image tag is fixed to a specific release.
 # You may also choose to always stay on the latest release with: latest-11_1
-# The default is docker.io/rotheross/otobo:rel-11_1_0-beta3
+# The default is docker.io/rotheross/otobo:rel-11_1_1
 ################################################################################
 
 # Examples:
-#OTOBO_IMAGE_OTOBO=docker.io/rotheross/otobo:rel-11_1_0-beta3
+#OTOBO_IMAGE_OTOBO=docker.io/rotheross/otobo:rel-11_1_1
 #OTOBO_IMAGE_OTOBO=docker.io/rotheross/otobo:latest-11_1
-#OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_0-beta3
+#OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_1
 
 ################################################################################
 # The image tag is fixed to a specific release.
-# The default is docker.io/rotheross/otobo-elasticsearch:rel-11_1_0-beta3
+# The default is docker.io/rotheross/otobo-elasticsearch:rel-11_1_1
 ################################################################################
 
 # Examples:
-#OTOBO_IMAGE_OTOBO_ELASTICSEARCH=docker.io/rotheross/otobo-elasticsearch:rel-11_1_0-beta3
+#OTOBO_IMAGE_OTOBO_ELASTICSEARCH=docker.io/rotheross/otobo-elasticsearch:rel-11_1_1
 #OTOBO_IMAGE_OTOBO_ELASTICSEARCH=docker.io/rotheross/otobo-elasticsearch:latest-11_1
 
 ################################################################################

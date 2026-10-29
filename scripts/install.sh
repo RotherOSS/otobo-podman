@@ -101,11 +101,13 @@ read_env_file "$package_dir/.env"
 # Defaults, identical to the ones in the compose files of otobo-docker,
 # except that Podman needs fully qualified image names.
 OTOBO_SERVICES="${OTOBO_SERVICES:-db elastic redis web daemon nginx}"
+
 OTOBO_IMAGE_DB="${OTOBO_IMAGE_DB:-docker.io/library/mariadb:lts-noble}"
-OTOBO_IMAGE_OTOBO="${OTOBO_IMAGE_OTOBO:-docker.io/rotheross/otobo:rel-11_1_0-beta3}"
-OTOBO_IMAGE_OTOBO_ELASTICSEARCH="${OTOBO_IMAGE_OTOBO_ELASTICSEARCH:-docker.io/rotheross/otobo-elasticsearch:rel-11_1_0-beta3}"
-OTOBO_IMAGE_OTOBO_NGINX="${OTOBO_IMAGE_OTOBO_NGINX:-docker.io/rotheross/otobo-nginx-webproxy:rel-11_1_0-beta3}"
+OTOBO_IMAGE_OTOBO="${OTOBO_IMAGE_OTOBO:-docker.io/rotheross/otobo:rel-11_1_1}"
+OTOBO_IMAGE_OTOBO_ELASTICSEARCH="${OTOBO_IMAGE_OTOBO_ELASTICSEARCH:-docker.io/rotheross/otobo-elasticsearch:rel-11_1_1}"
+OTOBO_IMAGE_OTOBO_NGINX="${OTOBO_IMAGE_OTOBO_NGINX:-docker.io/rotheross/otobo-nginx-webproxy:rel-11_1_1}"
 OTOBO_IMAGE_REDIS="${OTOBO_IMAGE_REDIS:-docker.io/library/redis:8-bookworm}"
+
 OTOBO_DB_QUERY_CACHE_SIZE="${OTOBO_DB_QUERY_CACHE_SIZE:-33554432}"
 OTOBO_WEB_OPTION="${OTOBO_WEB_OPTION:-}"
 OTOBO_WEB_HTTP_IPADDR="${OTOBO_WEB_HTTP_IPADDR:-0.0.0.0}"
@@ -115,6 +117,8 @@ OTOBO_WEB_HTTPS_PORT="${OTOBO_WEB_HTTPS_PORT:-8443}"
 OTOBO_ELASTICSEARCH_ES_JAVA_OPTS="${OTOBO_ELASTICSEARCH_ES_JAVA_OPTS:--Xms512m -Xmx512m}"
 OTOBO_PROXY_SECRET="${OTOBO_PROXY_SECRET:-}"
 NGINX_ENVSUBST_TEMPLATE_DIR="${NGINX_ENVSUBST_TEMPLATE_DIR:-}"
+
+# The location of the environment files is passed to the quadlets
 OTOBO_ENV_DIR="$env_dir"
 
 # Mandatory settings, same checks as ':?err' in the compose files.

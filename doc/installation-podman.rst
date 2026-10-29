@@ -60,7 +60,7 @@ Differences to the Docker Compose setup
   the services to install. ``db elastic web daemon`` are mandatory,
   ``nginx`` (HTTPS) and ``redis`` are optional.
 * Image names must be fully qualified, e.g.
-  ``docker.io/rotheross/otobo:rel-11_1_0-beta3``. A local registry is
+  ``docker.io/rotheross/otobo:rel-11_1_1``. A local registry is
   configured by using its address in the image name.
 * ``depends_on`` is replaced by systemd dependencies. Thanks to
   ``Notify=healthy`` the web server starts only after the database and
@@ -85,9 +85,9 @@ Requirements
 Where the images come from
 --------------------------
 
-The default image names and tags are set in ``scripts/install.sh``. They may be overridden in
-``.env`` (``OTOBO_IMAGE_OTOBO``, ``OTOBO_IMAGE_DB`` and so on). ``install.sh`` pulls them before installing
-the units.
+The default image names and tags are set in ``scripts/install.sh`` and ``scripts\export-images.sh``.
+They may be overridden in ``.env`` (``OTOBO_IMAGE_OTOBO``, ``OTOBO_IMAGE_DB`` and so on).
+``install.sh`` pulls them before installing the units.
 
 1. **Docker Hub (default).** Nothing to configure. The host needs internet
    access; a proxy is honoured via the usual ``HTTPS_PROXY`` environment of
@@ -95,7 +95,7 @@ the units.
 
 2. **Local registry.** Put the address of your registry into the image
    names, e.g.
-   ``OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_0-beta3``.
+   ``OTOBO_IMAGE_OTOBO=registry.example.com/rotheross/otobo:rel-11_1_1``.
    A registry with a self-signed certificate has to be declared as
    ``insecure`` in ``/etc/containers/registries.conf``, see
    ``man containers-registries.conf``.

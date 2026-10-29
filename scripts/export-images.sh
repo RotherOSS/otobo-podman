@@ -44,11 +44,11 @@ fi
 OTOBO_SERVICES="${OTOBO_SERVICES:-db elastic redis web daemon nginx}"
 images=(
     "${OTOBO_IMAGE_DB:-docker.io/library/mariadb:lts-noble}"
-    "${OTOBO_IMAGE_OTOBO:-docker.io/rotheross/otobo:rel-11_1_0-beta3}"
-    "${OTOBO_IMAGE_OTOBO_ELASTICSEARCH:-docker.io/rotheross/otobo-elasticsearch:rel-11_1_0-beta3}"
+    "${OTOBO_IMAGE_OTOBO:-docker.io/rotheross/otobo:rel-11_1_1}"
+    "${OTOBO_IMAGE_OTOBO_ELASTICSEARCH:-docker.io/rotheross/otobo-elasticsearch:rel-11_1_1}"
 )
 [[ " $OTOBO_SERVICES " == *" redis "* ]] && images+=( "${OTOBO_IMAGE_REDIS:-docker.io/library/redis:8-bookworm}" )
-[[ " $OTOBO_SERVICES " == *" nginx "* ]] && images+=( "${OTOBO_IMAGE_OTOBO_NGINX:-docker.io/rotheross/otobo-nginx-webproxy:rel-11_1_0-beta3}" )
+[[ " $OTOBO_SERVICES " == *" nginx "* ]] && images+=( "${OTOBO_IMAGE_OTOBO_NGINX:-docker.io/rotheross/otobo-nginx-webproxy:rel-11_1_1}" )
 
 echo "==> Pulling images"
 for image in "${images[@]}"; do
