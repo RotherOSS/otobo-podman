@@ -23,9 +23,9 @@
 
 # OTOBO_SERVICES lists the services that are installed, similar to COMPOSE_FILE
 # in otobo-docker. The services db, elastic, web and daemon are always needed.
-# - nginx: HTTPS reverse proxy. Without nginx the web server is published via HTTP.
-# - redis: caching with Redis
-OTOBO_SERVICES=db elastic redis web daemon nginx
+# - nginx: optional HTTPS reverse proxy. Without nginx the web server is published via HTTP.
+# - redis: optional caching with Redis
+OTOBO_SERVICES=db elastic web daemon nginx
 
 # Database configuration
 # OTOBO_DB_ROOT_PASSWORD must be set
