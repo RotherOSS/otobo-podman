@@ -26,6 +26,7 @@ Image=${OTOBO_IMAGE_REDIS}
 ContainerName=otobo-redis
 Network=otobo.network
 NetworkAlias=redis
+SecurityLabelLevel=s0
 
 User=redis
 Group=redis

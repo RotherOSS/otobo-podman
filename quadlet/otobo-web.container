@@ -31,6 +31,7 @@ Image=${OTOBO_IMAGE_OTOBO}
 ContainerName=otobo-web
 Network=otobo.network
 NetworkAlias=web
+SecurityLabelLevel=s0
 Volume=otobo-opt-otobo.volume:/opt/otobo
 Volume=otobo-opt-otobo-update.volume:/opt/otobo_update
 

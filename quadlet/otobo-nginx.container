@@ -29,6 +29,7 @@ Image=${OTOBO_IMAGE_OTOBO_NGINX}
 ContainerName=otobo-nginx
 Network=otobo.network
 NetworkAlias=nginx
+SecurityLabelLevel=s0
 Volume=otobo-nginx-ssl.volume:/etc/nginx/ssl
 
 # Capabilities nginx needs to drop privileges after binding its ports.

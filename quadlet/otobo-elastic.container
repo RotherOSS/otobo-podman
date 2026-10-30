@@ -27,6 +27,7 @@ Image=${OTOBO_IMAGE_OTOBO_ELASTICSEARCH}
 ContainerName=otobo-elastic
 Network=otobo.network
 NetworkAlias=elastic
+SecurityLabelLevel=s0
 Volume=otobo-elasticsearch-data.volume:/usr/share/elasticsearch/data
 
 DropCapability=ALL

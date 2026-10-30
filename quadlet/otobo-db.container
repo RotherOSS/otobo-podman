@@ -28,6 +28,7 @@ ContainerName=otobo-db
 Network=otobo.network
 # Other containers reach the database under the host name 'db'.
 NetworkAlias=db
+SecurityLabelLevel=s0
 Volume=otobo-mariadb-data.volume:/var/lib/mysql
 
 # Run as the unprivileged user of the image (same as 'user: mysql:mysql').

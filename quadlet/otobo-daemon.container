@@ -29,6 +29,7 @@ Image=${OTOBO_IMAGE_OTOBO}
 ContainerName=otobo-daemon
 Network=otobo.network
 NetworkAlias=daemon
+SecurityLabelLevel=s0
 Volume=otobo-opt-otobo.volume:/opt/otobo
 
 DropCapability=ALL
